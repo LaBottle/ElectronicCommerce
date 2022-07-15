@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicCommerce.Server", "ElectronicCommerce\Server\ElectronicCommerce.Server.csproj", "{4F31E468-5390-4461-8D43-0876F1A0B241}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicCommerce.Server", "ElectronicCommerce\Server\ElectronicCommerce.Server.csproj", "{4F31E468-5390-4461-8D43-0876F1A0B241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicCommerce.Client", "ElectronicCommerce\Client\ElectronicCommerce.Client.csproj", "{BD236503-1920-49D6-BC70-86241BD54A65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicCommerce.Client", "ElectronicCommerce\Client\ElectronicCommerce.Client.csproj", "{BD236503-1920-49D6-BC70-86241BD54A65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicCommerce.Shared", "ElectronicCommerce\Shared\ElectronicCommerce.Shared.csproj", "{C81169EF-C478-4660-BE92-79B156E11946}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicCommerce.Shared", "ElectronicCommerce\Shared\ElectronicCommerce.Shared.csproj", "{C81169EF-C478-4660-BE92-79B156E11946}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
