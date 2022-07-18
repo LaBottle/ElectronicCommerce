@@ -46,6 +46,7 @@ public class DataContext : DbContext {
                 ImageUrl =
                     "https://upload.wikimedia.org/wikipedia/en/b/bd/H2G2_UK_front_cover.jpg",
                 CategoryId = 1,
+                Featured = true,
             },
             new Product {
                 Id = 2,
@@ -82,6 +83,7 @@ public class DataContext : DbContext {
                     "Back to the Future is a 1985 American science fiction film directed by Robert Zemeckis. Written by Zemeckis and Bob Gale, it stars Michael J. Fox, Christopher Lloyd, Lea Thompson, Crispin Glover, and Thomas F. Wilson. Set in 1985, the story follows Marty McFly (Fox), a teenager accidentally sent back to 1955 in a time-traveling DeLorean automobile built by his eccentric scientist friend Doctor Emmett \"Doc\" Brown (Lloyd). Trapped in the past, Marty inadvertently prevents his future parents' meeting—threatening his very existence—and is forced to reconcile the pair and somehow get back to the future.",
                 ImageUrl =
                     "https://upload.wikimedia.org/wikipedia/en/d/d2/Back_to_the_Future.jpg",
+                Featured = true,
             },
             new Product {
                 Id = 6,
@@ -118,6 +120,7 @@ public class DataContext : DbContext {
                     "Day of the Tentacle, also known as Maniac Mansion II: Day of the Tentacle, is a 1993 graphic adventure game developed and published by LucasArts. It is the sequel to the 1987 game Maniac Mansion.",
                 ImageUrl =
                     "https://upload.wikimedia.org/wikipedia/en/7/79/Day_of_the_Tentacle_artwork.jpg",
+                Featured = true,
             },
             new Product {
                 Id = 10,
@@ -239,5 +242,6 @@ public class DataContext : DbContext {
     public DbSet<Product> Products { get; set; } = null!;
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<ProductType> ProductTypes { get; set; } = null!;
-    public DbSet<ProductVariant> ProductVarients { get; set; } = null!;
+    public DbSet<ProductVariant> ProductVariants { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
 }

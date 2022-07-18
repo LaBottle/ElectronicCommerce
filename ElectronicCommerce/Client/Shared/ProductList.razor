@@ -3,13 +3,13 @@
 
 @if (ProductService.Products == null || !ProductService.Products.Any()) {
     <span class="spinner-border spinner-border-sm"></span>
-    <span>Loading Products...</span>
+    <span>@ProductService.Message</span>
 }
 else {
     <ul class="list-unstyled">
         @foreach (var product in ProductService.Products) {
             <li class="media my-3">
-                <div class="media-img-wrapper me-5" >
+                <div class="media-img-wrapper me-5">
                     <a href="/product/@product.Id">
                         <img class="media-img" src="@product.ImageUrl" alt="@product.Title"/>
                     </a>
@@ -26,7 +26,14 @@ else {
             </li>
         }
     </ul>
-}
+
+    for (int i = 1; i <= ProductService.PageCount; i++) {
+        <a class="btn 
+                @(i == ProductService.CurrentPage ? "btn-info" : "btn-outline-info") 
+                page-selection"
+           href="/search/@ProductService.LastSearchText/@i">@i</a>
+        }
+    }
 
 @code {
     static List<Product> Products = new();
@@ -49,3 +56,4 @@ else {
     }
 
 }
+
