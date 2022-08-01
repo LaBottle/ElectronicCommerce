@@ -5,6 +5,7 @@ global using ElectronicCommerce.Server.Services.ProductService;
 global using ElectronicCommerce.Server.Services.CategoryService;
 global using ElectronicCommerce.Server.Services.CartService;
 global using ElectronicCommerce.Server.Services.AuthService;
+global using ElectronicCommerce.Server.Services.OrderService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.IdentityModel.Tokens;
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
    .AddJwtBearer(options => {
             options.TokenValidationParameters = new TokenValidationParameters {
@@ -38,6 +40,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             };
         }
     );
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

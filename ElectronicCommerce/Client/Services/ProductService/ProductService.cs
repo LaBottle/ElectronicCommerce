@@ -34,7 +34,7 @@ public class ProductService : IProductService {
         if (!Products.Any()) {
             Message = "No products found...";
         }
-        ProductsChange?.Invoke();
+        ProductsChange.Invoke();
     }
 
     public async Task<List<string>> GetProductSearchSuggestions(string searchText) {

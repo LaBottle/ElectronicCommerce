@@ -8,5 +8,5 @@ public class Product {
     public Category? Category { get; set; }
     public int CategoryId { get; set; }
     public bool Featured { get; set; }
-    public List<ProductVariant> Varients { get; set; } = new();
+    public List<ProductVariant> Varients { get; set; } = null!;
 }

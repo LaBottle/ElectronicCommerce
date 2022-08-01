@@ -5,8 +5,14 @@ public class DataContext : DbContext {
         base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        modelBuilder.Entity<CartItem>()
+           .HasKey(ci => new {ci.UserId, ci.ProductId, ci.ProductTypeId});
+
         modelBuilder.Entity<ProductVariant>()
-                    .HasKey(p => new {p.ProductId, p.ProductTypeId});
+           .HasKey(p => new {p.ProductId, p.ProductTypeId});
+
+        modelBuilder.Entity<OrderItem>()
+           .HasKey(oi => new {oi.OrderId, oi.ProductId, oi.ProductTypeId});
 
         modelBuilder.Entity<ProductType>().HasData(
             new ProductType {Id = 1, Name = "Default"},
@@ -35,6 +41,16 @@ public class DataContext : DbContext {
                 Id = 3,
                 Name = "Video games",
                 Url = "video-games"
+            },
+            new Category {
+                Id = 4,
+                Name = "食品",
+                Url = "food"
+            },
+            new Category {
+                Id = 5,
+                Name = "生活用品",
+                Url = "necessities"
             }
         );
         modelBuilder.Entity<Product>().HasData(
@@ -244,4 +260,7 @@ public class DataContext : DbContext {
     public DbSet<ProductType> ProductTypes { get; set; } = null!;
     public DbSet<ProductVariant> ProductVariants { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
+    public DbSet<CartItem> CartItems { get; set; } = null!;
+    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<OrderItem> OrdersItems { get; set; } = null!;
 }
