@@ -10,5 +10,6 @@ public interface IProductService {
     Task<ServiceResponse<Product>> GetProduct(int productId);
     Task SearchProducts(string searchText, int page);
     Task<List<string>> GetProductSearchSuggestions(string searchText);
+    Task<int> GetProductSales(int productId);
 }
 

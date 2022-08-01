@@ -44,6 +44,13 @@ public class ProductService : IProductService {
         return result!.Data!;
     }
 
+    public async Task<int> GetProductSales(int productId) {
+        var result =
+            await _http.GetFromJsonAsync<ServiceResponse<int>>(
+                $"api/product/{productId}/sales");
+        return result!.Data;
+    }
+
     public async Task GetProducts(string? categoryUrl = null) {
         var result = categoryUrl == null
             ? await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>(

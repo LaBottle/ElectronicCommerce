@@ -41,16 +41,6 @@ public class DataContext : DbContext {
                 Id = 3,
                 Name = "Video games",
                 Url = "video-games"
-            },
-            new Category {
-                Id = 4,
-                Name = "食品",
-                Url = "food"
-            },
-            new Category {
-                Id = 5,
-                Name = "生活用品",
-                Url = "necessities"
             }
         );
         modelBuilder.Entity<Product>().HasData(

@@ -38,7 +38,7 @@ namespace ElectronicCommerce.Server.Migrations
 
                     b.HasKey("UserId", "ProductId", "ProductTypeId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("ElectronicCommerce.Shared.Category", b =>
@@ -59,7 +59,7 @@ namespace ElectronicCommerce.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -101,7 +101,7 @@ namespace ElectronicCommerce.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("ElectronicCommerce.Shared.OrderItem", b =>
@@ -127,7 +127,7 @@ namespace ElectronicCommerce.Server.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("OrdersItems");
+                    b.ToTable("OrdersItems", (string)null);
                 });
 
             modelBuilder.Entity("ElectronicCommerce.Shared.Product", b =>
@@ -160,7 +160,7 @@ namespace ElectronicCommerce.Server.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -278,7 +278,7 @@ namespace ElectronicCommerce.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductTypes");
+                    b.ToTable("ProductTypes", (string)null);
 
                     b.HasData(
                         new
@@ -351,7 +351,7 @@ namespace ElectronicCommerce.Server.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("ProductVariants");
+                    b.ToTable("ProductVariants", (string)null);
 
                     b.HasData(
                         new
@@ -500,7 +500,7 @@ namespace ElectronicCommerce.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("ElectronicCommerce.Shared.OrderItem", b =>

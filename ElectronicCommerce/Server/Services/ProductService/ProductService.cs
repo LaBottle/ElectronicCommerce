@@ -102,6 +102,11 @@ public class ProductService : IProductService {
         return response;
     }
 
+    public async Task<ServiceResponse<int>> GetProductSales(int productId) {
+        var result= await _context.OrdersItems.Where(oi => oi.ProductId == productId).CountAsync();
+        return new ServiceResponse<int> {Data = result};
+    }
+
     public async Task<ServiceResponse<List<Product>>> GetProducts() {
         var response = new ServiceResponse<List<Product>> {
             Data = await _context.Products.Include(p => p.Varients)
