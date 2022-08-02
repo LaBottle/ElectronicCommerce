@@ -27,7 +27,7 @@ public class ProductService : IProductService {
     public async Task<ServiceResponse<ProductSearchResult>> SearchProducts(
         string searchText, int page) {
 
-        const int pageResults = 2;
+        const int pageResults = 5;
         var pageCount =
             (int) Math.Ceiling((await FindProductsBySearchText(searchText)).Count / (float)pageResults);
         var products = await _context.Products

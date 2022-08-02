@@ -8,11 +8,12 @@ public class ProductService : IProductService {
         _http = http ?? throw new ArgumentNullException(nameof(http));
     }
 
-    public List<Product> Products { get; set; } = new();
+    public List<Product>? Products { get; set; } = null;
+    public List<int>? Sales { get; set; } = null;
     public string Message { get; set; } = "Loading products...";
     public int CurrentPage { get; set; } = 1;
     public int PageCount { get; set; } = 0;
-    public string LastSearchText { get; set; }=string.Empty;
+    public string LastSearchText { get; set; } = string.Empty;
 
     public async Task<ServiceResponse<Product>> GetProduct(int productId) {
         var result =
@@ -20,7 +21,7 @@ public class ProductService : IProductService {
                 $"api/product/{productId}");
         return result!;
     }
-    
+
     public async Task SearchProducts(string searchText, int page) {
         LastSearchText = searchText;
         var result =
@@ -31,9 +32,17 @@ public class ProductService : IProductService {
             CurrentPage = result.Data.CurrentPage;
             PageCount = result.Data.Pages;
         }
-        if (!Products.Any()) {
+
+        if (Products.Count == 0) {
             Message = "No products found...";
         }
+
+        Sales = new List<int>(Products.Count);
+        foreach (var product in Products) {
+            Sales.Add((await _http.GetFromJsonAsync<ServiceResponse<int>>(
+                $"api/product/{product.Id}/sales"))!.Data);
+        }
+
         ProductsChange.Invoke();
     }
 
@@ -42,13 +51,6 @@ public class ProductService : IProductService {
             await _http.GetFromJsonAsync<ServiceResponse<List<string>>>(
                 $"api/product/searchSuggestions/{searchText}");
         return result!.Data!;
-    }
-
-    public async Task<int> GetProductSales(int productId) {
-        var result =
-            await _http.GetFromJsonAsync<ServiceResponse<int>>(
-                $"api/product/{productId}/sales");
-        return result!.Data;
     }
 
     public async Task GetProducts(string? categoryUrl = null) {
@@ -65,8 +67,14 @@ public class ProductService : IProductService {
         CurrentPage = 1;
         PageCount = 0;
 
-        if (!Products.Any()) {
+        if (Products.Count == 0) {
             Message = "No products found.";
+        }
+
+        Sales = new List<int>(Products.Count);
+        foreach (var product in Products) {
+            Sales.Add((await _http.GetFromJsonAsync<ServiceResponse<int>>(
+                $"api/product/{product.Id}/sales"))!.Data);
         }
 
         ProductsChange.Invoke();

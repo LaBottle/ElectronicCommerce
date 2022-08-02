@@ -1,59 +1,72 @@
 ﻿@inject IProductService ProductService
 @implements IDisposable
 
-@if (ProductService.Products == null || !ProductService.Products.Any()) {
+@if (ProductService.Products == null || ProductService.Sales == null) {
     <span class="spinner-border spinner-border-sm"></span>
     <span>@ProductService.Message</span>
 }
+else if (ProductService.Products.Count == 0) {
+    <span>没有商品</span>
+}
 else {
-    <ul class="list-unstyled">
-        @foreach (var product in ProductService.Products) {
-            <li class="media my-3">
-                <div class="media-img-wrapper me-5">
+    <div class="row row-cols-5">
+        @foreach (var (product, sales) in ProductService.Products.Zip(ProductService.Sales)) {
+            <div class="col">
+                <div class="card" >
                     <a href="/product/@product.Id">
-                        <img class="media-img" src="@product.ImageUrl" alt="@product.Title"/>
+                        <img class="card-img-top" src="@product.ImageUrl" alt="@product.Title">
+                        <div class="card-body">
+                            <h5 class="text-success">@GetPriceText(product)</h5>
+                            <p class="text-muted float-end">销量：@sales</p>
+                            <h3 class="card-title">@product.Title</h3>
+                        </div>
                     </a>
                 </div>
-                <div class="media-body">
-                    <a href="/product/@product.Id">
-                        <h4 class="mb-0">@product.Title</h4>
-                    </a>
-                    <p>@product.Description</p>
-                    <h5 class="price">
-                        @GetPriceText(product)
-                    </h5>
-                </div>
-            </li>
+            </div>
         }
-    </ul>
+    </div>
 
-    for (int i = 1; i <= ProductService.PageCount; i++) {
-        <a class="btn 
-                @(i == ProductService.CurrentPage ? "btn-info" : "btn-outline-info") 
-                page-selection"
-           href="/search/@ProductService.LastSearchText/@i">@i</a>
-        }
-    }
+@*     for (int i = 1; i <= ProductService.PageCount; i++) { *@
+@*         <a class="btn  *@
+@*                 @(i == ProductService.CurrentPage ? "btn-info" : "btn-outline-info")  *@
+@*                 page-selection" *@
+@*            href="/search/@ProductService.LastSearchText/@i"> *@
+@*             @i *@
+@*         </a> *@
+@*     } *@
+}
 
 @code {
-    static List<Product> Products = new();
+
+    // List<int>? Sales = null;
 
     protected override void OnInitialized() => ProductService.ProductsChange += StateHasChanged;
+
+    // protected override async Task OnInitializedAsync() {
+    //     while (Products == null) {
+    //         await Task.Delay(10);
+    //     }
+    //     Sales = new List<int>(Products.Count);
+    //     foreach (var product in Products) {
+    //         Sales.Add(await ProductService.GetProductSales(product.Id));
+    //     }
+    // }
+
 
     public void Dispose() => ProductService.ProductsChange -= StateHasChanged;
 
     string GetPriceText(Product product) {
         var variants = product.Varients;
-        if (!variants.Any()) {
-            return string.Empty;
+        switch (variants.Count) {
+            case 0:
+                return "暂无报价";
+            case 1:
+                return $"￥{variants[0].Price}";
+            default: {
+                var minPrice = variants.Min(v => v.Price);
+                return $"低至￥{minPrice}";
+            }
         }
-        if (variants.Count == 1) {
-            return $"${variants[0].Price}";
-        }
-
-        var minPrice = variants.Min(v => v.Price);
-        return $"As low as ${minPrice}";
     }
 
 }
-
