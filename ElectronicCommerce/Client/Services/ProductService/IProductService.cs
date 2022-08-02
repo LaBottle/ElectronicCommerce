@@ -9,7 +9,7 @@ public interface IProductService {
     string LastSearchText { get; set; }
     Task GetProducts(string? categoryUrl = null);
     Task<ServiceResponse<Product>> GetProduct(int productId);
-    Task SearchProducts(string searchText, int page);
+    Task SearchProducts(string searchText);
     Task<List<string>> GetProductSearchSuggestions(string searchText);
 }
 

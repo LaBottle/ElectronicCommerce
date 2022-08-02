@@ -6,7 +6,7 @@
     <span>@ProductService.Message</span>
 }
 else if (ProductService.Products.Count == 0) {
-    <span>没有商品</span>
+    <span>@ProductService.Message</span>
 }
 else {
     <div class="row row-cols-5">
@@ -25,32 +25,10 @@ else {
             </div>
         }
     </div>
-
-@*     for (int i = 1; i <= ProductService.PageCount; i++) { *@
-@*         <a class="btn  *@
-@*                 @(i == ProductService.CurrentPage ? "btn-info" : "btn-outline-info")  *@
-@*                 page-selection" *@
-@*            href="/search/@ProductService.LastSearchText/@i"> *@
-@*             @i *@
-@*         </a> *@
-@*     } *@
 }
 
 @code {
-
-    // List<int>? Sales = null;
-
     protected override void OnInitialized() => ProductService.ProductsChange += StateHasChanged;
-
-    // protected override async Task OnInitializedAsync() {
-    //     while (Products == null) {
-    //         await Task.Delay(10);
-    //     }
-    //     Sales = new List<int>(Products.Count);
-    //     foreach (var product in Products) {
-    //         Sales.Add(await ProductService.GetProductSales(product.Id));
-    //     }
-    // }
 
 
     public void Dispose() => ProductService.ProductsChange -= StateHasChanged;

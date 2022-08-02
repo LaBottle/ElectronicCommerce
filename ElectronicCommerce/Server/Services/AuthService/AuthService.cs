@@ -19,10 +19,10 @@ public class AuthService : IAuthService {
         int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
     public async Task<ServiceResponse<int>> Register(User user, string password) {
-        if (await UserExists(user.Email)) {
+        if (await UserExists(user.UserName)) {
             return new ServiceResponse<int> {
                 Success = false,
-                Message = "User already exists."
+                Message = "用户名已存在！"
             };
         }
 
@@ -30,26 +30,26 @@ public class AuthService : IAuthService {
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        return new ServiceResponse<int> {Data = user.Id, Message = "Registration successful!"};
+        return new ServiceResponse<int> {Data = user.Id, Message = "注册成功"};
     }
 
     public async Task<bool> UserExists(string email) {
         return await _context.Users.AnyAsync(user =>
-            user.Email.ToLower().Equals(email.ToLower()));
+            user.UserName.ToLower().Equals(email.ToLower()));
     }
 
-    public async Task<ServiceResponse<string>> Login(string email, string password) {
+    public async Task<ServiceResponse<string>> Login(string userName, string password) {
         var response = new ServiceResponse<string>();
         var user =
             await _context.Users.FirstOrDefaultAsync(x =>
-                x.Email.ToLower().Equals(email.ToLower()));
+                x.UserName.ToLower().Equals(userName.ToLower()));
         if (user == null) {
             response.Success = false;
-            response.Message = "User not found.";
+            response.Message = "用户名不存在！";
         }
         else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt)) {
             response.Success = false;
-            response.Message = "Wrong Password.";
+            response.Message = "密码错误！";
         }
         else {
             response.Data = CreateToken(user);
@@ -63,7 +63,7 @@ public class AuthService : IAuthService {
         if (user==null) {
             return new ServiceResponse<bool> {
                 Success = false,
-                Message = "User not found."
+                Message = "用户名不存在！"
             };
         }
 
@@ -71,7 +71,7 @@ public class AuthService : IAuthService {
         await _context.SaveChangesAsync();
         return new ServiceResponse<bool> {
             Data = true,
-            Message = "Password has been changed."
+            Message = "修改密码成功！"
         };
 
     }
@@ -79,7 +79,7 @@ public class AuthService : IAuthService {
     private string CreateToken(User user) {
         List<Claim> claims = new List<Claim> {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Email)
+            new Claim(ClaimTypes.Name, user.UserName)
         };
 
         var key = new SymmetricSecurityKey(

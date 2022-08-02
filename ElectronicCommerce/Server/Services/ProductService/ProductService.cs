@@ -15,7 +15,7 @@ public class ProductService : IProductService {
            .FirstOrDefaultAsync(p => p.Id == productId);
         if (product == null) {
             response.Success = false;
-            response.Message = "Sorry, this product does not exist.";
+            response.Message = "抱歉，该商品不存在";
         }
         else {
             response.Data = product;
@@ -24,27 +24,16 @@ public class ProductService : IProductService {
         return response;
     }
 
-    public async Task<ServiceResponse<ProductSearchResult>> SearchProducts(
-        string searchText, int page) {
-
-        const int pageResults = 5;
-        var pageCount =
-            (int) Math.Ceiling((await FindProductsBySearchText(searchText)).Count / (float)pageResults);
+    public async Task<ServiceResponse<List<Product>>> SearchProducts(string searchText) {
         var products = await _context.Products
            .Where(p =>
                 p.Title.ToLower().Contains(searchText.ToLower())
               ||
                 p.Description.ToLower().Contains(searchText.ToLower()))
            .Include(p => p.Varients)
-           .Skip((page - 1) * pageResults)
-           .Take(pageResults)
            .ToListAsync();
-        var response = new ServiceResponse<ProductSearchResult> {
-            Data = new ProductSearchResult {
-                Products = products,
-                CurrentPage = page,
-                Pages = pageCount
-            }
+        var response = new ServiceResponse<List<Product>> {
+            Data = products
         };
         return response;
     }

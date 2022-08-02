@@ -291,6 +291,7 @@ public class DataContext : DbContext {
                 Price = 9.9m,
             }
         );
+        
     }
 
     public DbSet<Product> Products { get; set; } = null!;

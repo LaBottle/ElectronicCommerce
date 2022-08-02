@@ -10,7 +10,7 @@ public class ProductService : IProductService {
 
     public List<Product>? Products { get; set; } = null;
     public List<int>? Sales { get; set; } = null;
-    public string Message { get; set; } = "Loading products...";
+    public string Message { get; set; } = "正在加载...";
     public int CurrentPage { get; set; } = 1;
     public int PageCount { get; set; } = 0;
     public string LastSearchText { get; set; } = string.Empty;
@@ -22,19 +22,17 @@ public class ProductService : IProductService {
         return result!;
     }
 
-    public async Task SearchProducts(string searchText, int page) {
+    public async Task SearchProducts(string searchText) {
         LastSearchText = searchText;
         var result =
-            await _http.GetFromJsonAsync<ServiceResponse<ProductSearchResult>>(
-                $"api/product/search/{searchText}/{page}");
-        if (result is {Data: { }}) {
-            Products = result.Data.Products;
-            CurrentPage = result.Data.CurrentPage;
-            PageCount = result.Data.Pages;
+            await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>(
+                $"api/product/search/{searchText}");
+        if (result != null && result.Data != null) {
+            Products = result.Data;
         }
 
         if (Products.Count == 0) {
-            Message = "No products found...";
+            Message = $"抱歉，没有找到与“{searchText}”相关的商品";
         }
 
         Sales = new List<int>(Products.Count);
@@ -68,7 +66,7 @@ public class ProductService : IProductService {
         PageCount = 0;
 
         if (Products.Count == 0) {
-            Message = "No products found.";
+            Message = "抱歉，这里还没有商品";
         }
 
         Sales = new List<int>(Products.Count);

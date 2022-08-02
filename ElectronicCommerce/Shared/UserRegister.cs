@@ -3,12 +3,12 @@
 namespace ElectronicCommerce.Shared;
 
 public class UserRegister {
-    [Required, EmailAddress]
-    public string Email { get; set; } = string.Empty;
+    [Required(ErrorMessage = "请输入用户名")]
+    public string UserName { get; set; } = string.Empty;
     
-    [Required, StringLength(100, MinimumLength = 6)]
+    [Required(ErrorMessage = "请输入密码"), StringLength(100, MinimumLength = 6, ErrorMessage = "密码长度必须在6位与100位之间")]
     public string Password { get; set; } = string.Empty;
     
-    [Compare("Password", ErrorMessage = "The passwords do not match.")]
+    [Compare("Password", ErrorMessage = "前后密码不匹配")]
     public string ConfirmPassword { get; set; } = string.Empty;
 }

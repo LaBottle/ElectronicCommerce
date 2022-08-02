@@ -12,15 +12,15 @@
     <div class="dropdown-menu dropdown-menu-right @UserMenuCssClass">
         <AuthorizeView>
             <Authorized>
-                <a href="profile" class="dropdown-item">Profile</a>
-                <a href="orders" class="dropdown-item">Orders</a>
+                <a href="profile" class="dropdown-item">个人信息</a>
+                <a href="orders" class="dropdown-item">订单</a>
                 <hr />
-                <button class="dropdown-item" @onclick="Logout">Logout</button>
+                <button class="dropdown-item" @onclick="Logout">退出登录</button>
             </Authorized>
             <NotAuthorized>
                 <a href="login?returnUrl=@NavigationManager.ToBaseRelativePath(NavigationManager.Uri)" 
-                   class="dropdown-item">Login</a>
-                <a href="register" class="dropdown-item">Regiser</a>
+                   class="dropdown-item">登录</a>
+                <a href="register" class="dropdown-item">注册</a>
             </NotAuthorized>
         </AuthorizeView>
     </div>

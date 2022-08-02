@@ -3,8 +3,8 @@
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
-                    <h3>Whoops! You're not allowed to see this page.</h3>
-                    <h5>Please <a href="login">login</a> or <a href="register">rigister</a> for a new account.</h5>
+                    <h3>这个页面需要登录后才能查看</h3>
+                    <h5>请先<a href="login">登录</a>或<a href="register">注册</a></h5>
                 </NotAuthorized>
             </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />

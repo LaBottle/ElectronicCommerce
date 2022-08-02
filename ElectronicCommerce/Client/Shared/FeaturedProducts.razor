@@ -1,10 +1,12 @@
 ﻿@inject IProductService ProductService
 @implements IDisposable
 
-<center>
-    <h2>Top Products of Today</h2>
-</center>
-@if (ProductService.Products == null || !ProductService.Products.Any()) {
+<h2 style="text-align: center;">最热门的三件商品</h2>
+@if (ProductService.Products == null || ProductService.Sales == null) {
+    <span class="spinner-border spinner-border-sm"></span>
+    <span>@ProductService.Message</span>
+}
+else if (ProductService.Products.Count == 0) {
     <span>@ProductService.Message</span>
 }
 else {
@@ -13,14 +15,14 @@ else {
             if (product.Featured == true) {
                 <div class="featured-product">
                     <a href="product/@product.Id">
-                        <img src="@product.ImageUrl"/>
+                        <img src="@product.ImageUrl" alt="@product.Title"/>
                     </a>
                     <h4>
                         <a href="product/@product.Id">@product.Title</a>
                     </h4>
                     @if (product.Varients != null && product.Varients.Any()) {
                         <h5 class="price">
-                            $@product.Varients[0].Price
+                            ￥@product.Varients[0].Price
                         </h5>
                     }
                 </div>

@@ -3,6 +3,7 @@
 @inject ICartService CartService
 
 @if (product == null) {
+    <span class="spinner-border spinner-border-sm"></span>
     <span>@message</span>
 }
 else {
@@ -27,11 +28,11 @@ else {
             @if (GetSelectedVariant() != null) {
                 if (GetSelectedVariant()!.OriginalPrice>GetSelectedVariant()!.Price) {
                     <h6 class="text-muted original-price">
-                        $@GetSelectedVariant()!.OriginalPrice
+                        ￥@GetSelectedVariant()!.OriginalPrice
                     </h6>
                 }
                 <h4 class="price">
-                    $@GetSelectedVariant()!.Price
+                    ￥@GetSelectedVariant()!.Price
                 </h4>
                 <button class="btn btn-primary" @onclick="AddToCart">
                     <i class="oi oi-cart"></i>&nbsp;&nbsp;&nbsp;<span class="oi oi-plus"></span>
@@ -50,7 +51,7 @@ else {
     public int Id { get; set; }
 
     protected override async Task OnParametersSetAsync() {
-        message = "Loading product...";
+        message = "正在加载...";
         var result = await ProductService.GetProduct(Id);
         if (!result.Success) {
             message = result.Message;

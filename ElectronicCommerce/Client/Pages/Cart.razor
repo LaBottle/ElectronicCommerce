@@ -3,18 +3,22 @@
 @inject IOrderService OrderService
 <PageTitle>Shopping Cart</PageTitle>
 
-@if (cartProducts == null || !cartProducts.Any()) {
+@if (cartProducts == null) {
+    <span class="spinner-border spinner-border-sm"></span>
+    <span>@message</span>
+}
+else if (cartProducts.Count <= 0) {
     <span>@message</span>
 }
 else if (orderPlaced) {
-    <span>Thank you for your order! You can check your orders <a href="orders">here</a></span>
+    <span>订单已下达，谢谢！你可以在<a href="orders">这里</a>查看你的订单</span>
 }
 else {
     <div>
         @foreach (var product in cartProducts) {
             <div class="container">
                 <div class="image-wrapper">
-                    <img src="@product.ImageUrl" class="image"/>
+                    <img src="@product.ImageUrl" class="image" alt="@product.Title"/>
                 </div>
                 <div class="name">
                     <h5>
@@ -23,23 +27,23 @@ else {
                     <span>@product.ProductType</span><br/>
                     <input type="number" value="@product.Quantity" @onchange="e => UpdateQuantity(e, product)" class="form-control input-quantity" min="1"/>
                     <button class="btn btn-delete" @onclick="() => RemoveItemFromCart(product.ProductId, product.ProductTypeId)">
-                        Delete
+                        删除
                     </button>
                 </div>
                 <div class="cart-product-price">$@(product.Price * product.Quantity)</div>
             </div>
         }
         <div class="cart-product-price">
-            Total (@cartProducts.Count): $@cartProducts.Sum(p => p.Price * p.Quantity)
+            合计: ￥@cartProducts.Sum(p => p.Price * p.Quantity)
         </div>
-        <button @onclick="PlaceOrder" class="btn alert-success float-end mt-1">Place Order</button>
+        <button @onclick="PlaceOrder" class="btn alert-success float-end mt-1">结算</button>
     </div>
 }
 
 @code {
     List<CartProductResponse>? cartProducts = null;
-    string message = "Loading cart...";
-    bool orderPlaced;
+    string message = "正在加载...";
+    bool orderPlaced = false;
 
     protected override async Task OnInitializedAsync() {
         orderPlaced = false;
@@ -54,8 +58,8 @@ else {
     async Task LoadCart() {
         await CartService.GetCartItemsCount();
         cartProducts = await CartService.GetCartProducts();
-        if (cartProducts==null||cartProducts.Count==0) {
-            message = "Your cart is empty.";
+        if (cartProducts == null || cartProducts.Count == 0) {
+            message = "你的购物车是空的，赶快选购商品吧";
         }
     }
 

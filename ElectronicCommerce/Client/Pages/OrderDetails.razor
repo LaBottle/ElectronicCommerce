@@ -2,31 +2,32 @@
 @inject IOrderService OrderService
 
 @if (order == null) {
-    <span>Loading order...</span>
+    <span class="spinner-border spinner-border-sm"></span>
+    <span>正在加载...</span>
 }
 else {
-    <h3>Order from @order.OrderDate</h3>
+    <h3>下单于 @order.OrderDate</h3>
 
     <div>
         @foreach (var product in order.Products) {
             <div class="container">
                 <div class="image-wrapper">
-                    <img src="@product.ImageUrl" class="image"/>
+                    <img src="@product.ImageUrl" class="image" alt="@product.Title"/>
                 </div>
                 <div class="name">
                     <h5>
                         <a href="/product/@product.ProductId">@product.Title</a>
                     </h5>
                     <span>@product.ProductType</span><br/>
-                    <span>Quantity: @product.Quantity</span>
+                    <span>数量: @product.Quantity</span>
                 </div>
                 <div class="product-price">
-                    Total: $@order.TotalPrice
+                    ￥@order.TotalPrice
                 </div>
             </div>
         }
         <div class="product-price">
-            Total: $@order.TotalPrice
+            合计: ￥@order.TotalPrice
         </div>
     </div>
 }
