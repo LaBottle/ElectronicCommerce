@@ -5,7 +5,6 @@ public interface IProductService {
     Task<ServiceResponse<Product>> GetProduct(int productId);
     Task<ServiceResponse<List<Product>>> SearchProducts(string searchText);
     Task<ServiceResponse<List<string>>> GetProductsSearchSuggestions(string searchText);
-    Task<ServiceResponse<List<Product>>> GetFeaturedProducts();
     Task<ServiceResponse<int>> GetProductSales(int productId);
 }
 

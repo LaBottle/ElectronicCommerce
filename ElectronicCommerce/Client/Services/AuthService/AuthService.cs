@@ -23,6 +23,11 @@ public class AuthService:IAuthService {
         return (await result.Content.ReadFromJsonAsync<ServiceResponse<bool>>())!;
     }
     
+    public async Task<ServiceResponse<bool>> ChangeAddress(UserChangeAddress request) {
+        var result = await _http.PostAsJsonAsync("api/auth/change-address", request.Address);
+        return (await result.Content.ReadFromJsonAsync<ServiceResponse<bool>>())!;
+    }
+    
     public async Task<bool> IsUserAuthenticated() {
         return (await _authStateProvider.GetAuthenticationStateAsync()).User.Identity!
            .IsAuthenticated;

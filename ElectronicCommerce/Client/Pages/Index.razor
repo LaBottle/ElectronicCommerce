@@ -5,12 +5,13 @@
 
 <PageTitle>我的商店</PageTitle>
 
-@if (SearchText == null && CategoryUrl == null) {
-    <FeaturedProducts/>
+@if (SearchText != null) {
+    <h3>"@SearchText"的搜索结果</h3>
+}else if (CategoryUrl == null) {
+    <h1 style="text-align: center; margin-bottom:20px;">最受欢迎的商品</h1>
 }
-else {
-    <ProductList/>
-}
+
+<ProductList/>
 
 @code{
 
@@ -24,8 +25,11 @@ else {
         if (SearchText != null) {
             await ProductService.SearchProducts(SearchText);
         }
+        else if(CategoryUrl!=null){
+            await ProductService.GetProductsByCategory(CategoryUrl);
+        }
         else {
-            await ProductService.GetProducts(CategoryUrl);
+            await ProductService.GetPopularProducts();
         }
     }
 

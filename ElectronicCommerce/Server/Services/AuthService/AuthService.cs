@@ -14,7 +14,7 @@ public class AuthService : IAuthService {
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
     }
-    
+
     public int GetUserId() => 
         int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
@@ -73,7 +73,23 @@ public class AuthService : IAuthService {
             Data = true,
             Message = "修改密码成功！"
         };
+    }
+    
+    public async Task<ServiceResponse<bool>> ChangeAddress(int userId, string newAddress) {
+        var user = await _context.Users.FindAsync(userId);
+        if (user==null) {
+            return new ServiceResponse<bool> {
+                Success = false,
+                Message = "用户名不存在！"
+            };
+        }
 
+        user.Address = newAddress;
+        await _context.SaveChangesAsync();
+        return new ServiceResponse<bool> {
+            Data = true,
+            Message = "修改地址成功！"
+        };
     }
 
     private string CreateToken(User user) {

@@ -57,7 +57,6 @@ public class DataContext : DbContext {
                     "伊利 纯牛奶250ml 全脂牛奶 早餐伴侣\n纯牛奶也叫UHT超高温灭菌奶，将新鲜生牛乳经过超高温瞬时灭菌(135℃到150℃，4到15秒)的瞬间灭菌处理，完全破坏其中可生长的微生物和芽孢。",
                 ImageUrl =
                     "https://img14.360buyimg.com/n0/jfs/t1/215346/13/16450/81333/6247b583E969562c1/31fff20ec62fb164.jpg",
-                Featured = true,
             },
             new Product {
                 Id = 2,
@@ -94,7 +93,6 @@ public class DataContext : DbContext {
                     "徐福记糖果结婚喜糖散装批发代可可脂金币巧克力2斤七夕礼物（2斤大约84颗左右） 金币巧克力2斤\n巧克力（chocolate也译朱古力），原产中南美洲，其鼻祖是“xocolatl”，意为“苦水”。其主要原料可可豆产于赤道南北纬18度以内的狭长地带。作饮料时，常称为“热巧克力”或可可亚。",
                 ImageUrl =
                     "https://img14.360buyimg.com/n0/jfs/t1/203111/1/470/214466/6110903bEadfec97d/b7da2af0fa707e4c.jpg",
-                Featured = true,
             },
             new Product {
                 Id = 6,
@@ -131,7 +129,6 @@ public class DataContext : DbContext {
                     "南极人NanJiren 床垫家纺 学生宿舍单人床垫 上下铺榻榻米床褥子垫子可折叠防滑软垫 灰色 0.9米床\n床垫，是为了保证消费者获得健康和舒适睡眠而使用的一种介于人体和床之间的物品。床垫材质繁多，不同材料制作的床垫能给人带来不同的睡眠效果。",
                 ImageUrl =
                     "https://img14.360buyimg.com/n0/jfs/t1/175123/17/17446/337732/60dc1446E0d63da51/11fa5d7e7b31d8a9.jpg",
-                Featured = true,
             },
             new Product {
                 Id = 10,

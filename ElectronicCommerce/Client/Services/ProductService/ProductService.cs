@@ -2,6 +2,7 @@
 
 public class ProductService : IProductService {
     private readonly HttpClient _http;
+    private IProductService _productServiceImplementation;
     public event Action ProductsChange = null!;
 
     public ProductService(HttpClient http) {
@@ -44,6 +45,31 @@ public class ProductService : IProductService {
         ProductsChange.Invoke();
     }
 
+
+    public async Task GetPopularProducts() {
+        var result = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/product");
+        if (result != null && result.Data != null) {
+            Products = result.Data;
+            Sales = new List<int>(Products.Count);
+            foreach (var product in Products) {
+                Sales.Add((await _http.GetFromJsonAsync<ServiceResponse<int>>(
+                    $"api/product/{product.Id}/sales"))!.Data);
+            }
+
+            var popularProducts =
+                Products.Zip(Sales).OrderByDescending(p => p.Second).Take(5).ToList();
+
+            Products = new List<Product>(5);
+            Sales = new List<int>(5);
+            foreach (var p in popularProducts) {
+                Products.Add(p.First);
+                Sales.Add(p.Second);
+            }
+        }
+
+        ProductsChange.Invoke();
+    }
+
     public async Task<List<string>> GetProductSearchSuggestions(string searchText) {
         var result =
             await _http.GetFromJsonAsync<ServiceResponse<List<string>>>(
@@ -51,12 +77,9 @@ public class ProductService : IProductService {
         return result!.Data!;
     }
 
-    public async Task GetProducts(string? categoryUrl = null) {
-        var result = categoryUrl == null
-            ? await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>(
-                "api/product/featured")
-            : await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>(
-                $"api/product/category/{categoryUrl}");
+    public async Task GetProductsByCategory(string categoryUrl) {
+        var result = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>(
+            $"api/product/category/{categoryUrl}");
 
         if (result is {Data: { }}) {
             Products = result.Data;

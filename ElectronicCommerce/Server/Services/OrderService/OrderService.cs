@@ -56,7 +56,7 @@ public class OrderService : IOrderService {
             OrderDate = o.OrderDate,
             TotalPrice = o.TotalPrice,
             Product = o.OrderItems.Count > 1
-                ? $"{o.OrderItems.First().Product.Title} and {o.OrderItems.Count - 1} more..."
+                ? $"{o.OrderItems.First().Product.Title}和另外{o.OrderItems.Count - 1}件商品"
                 : o.OrderItems.First().Product.Title,
             ProductImageUrl = o.OrderItems.First().Product.ImageUrl
         }));

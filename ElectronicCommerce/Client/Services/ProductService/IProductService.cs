@@ -7,9 +7,10 @@ public interface IProductService {
     int CurrentPage { get; set; }
     int PageCount { get; set; }
     string LastSearchText { get; set; }
-    Task GetProducts(string? categoryUrl = null);
+    Task GetProductsByCategory(string categoryUrl);
     Task<ServiceResponse<Product>> GetProduct(int productId);
     Task SearchProducts(string searchText);
+    Task GetPopularProducts();
     Task<List<string>> GetProductSearchSuggestions(string searchText);
 }
 

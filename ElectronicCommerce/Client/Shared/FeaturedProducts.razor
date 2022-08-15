@@ -12,7 +12,6 @@ else if (ProductService.Products.Count == 0) {
 else {
     <div class="container">
         @foreach (var product in ProductService.Products) {
-            if (product.Featured == true) {
                 <div class="featured-product">
                     <a href="product/@product.Id">
                         <img src="@product.ImageUrl" alt="@product.Title"/>
@@ -26,7 +25,6 @@ else {
                         </h5>
                     }
                 </div>
-            }
         }
     </div>
 }

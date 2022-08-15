@@ -29,8 +29,7 @@ else {
 
 @code {
     protected override void OnInitialized() => ProductService.ProductsChange += StateHasChanged;
-
-
+    
     public void Dispose() => ProductService.ProductsChange -= StateHasChanged;
 
     string GetPriceText(Product product) {

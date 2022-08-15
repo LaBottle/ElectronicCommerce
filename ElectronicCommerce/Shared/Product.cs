@@ -7,6 +7,5 @@ public class Product {
     public string ImageUrl { get; set; } = string.Empty;
     public Category? Category { get; set; }
     public int CategoryId { get; set; }
-    public bool Featured { get; set; }
     public List<ProductVariant> Varients { get; set; } = null!;
 }
