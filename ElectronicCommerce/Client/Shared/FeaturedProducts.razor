@@ -1,4 +1,5 @@
 ﻿@inject IProductService ProductService
+@using System.Diagnostics
 @implements IDisposable
 
 <h2 style="text-align: center;">最热门的三件商品</h2>
@@ -19,7 +20,8 @@ else {
                     <h4>
                         <a href="product/@product.Id">@product.Title</a>
                     </h4>
-                    @if (product.Varients != null && product.Varients.Any()) {
+                    
+                    @if (product.Varients.Any()) {
                         <h5 class="price">
                             ￥@product.Varients[0].Price
                         </h5>

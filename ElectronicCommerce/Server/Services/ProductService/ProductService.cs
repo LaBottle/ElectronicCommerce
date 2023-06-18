@@ -1,4 +1,6 @@
-﻿namespace ElectronicCommerce.Server.Services.ProductService;
+﻿using System.Diagnostics;
+
+namespace ElectronicCommerce.Server.Services.ProductService;
 
 public class ProductService : IProductService {
     private readonly DataContext _context;
@@ -16,8 +18,7 @@ public class ProductService : IProductService {
         if (product == null) {
             response.Success = false;
             response.Message = "抱歉，该商品不存在";
-        }
-        else {
+        } else {
             response.Data = product;
         }
 
@@ -25,16 +26,25 @@ public class ProductService : IProductService {
     }
 
     public async Task<ServiceResponse<List<Product>>> SearchProducts(string searchText) {
+        var response = new ServiceResponse<List<Product>>();
+        if (string.IsNullOrEmpty(searchText)) {
+            response.Success = false;
+            response.Message = "请输入搜索内容";
+            return response;
+        }
+
+        if (searchText.Length > 36) {
+            response.Message = "搜索内容过长";
+            searchText = searchText[..36];
+        }
+
         var products = await _context.Products
-           .Where(p =>
-                p.Title.ToLower().Contains(searchText.ToLower())
-              ||
-                p.Description.ToLower().Contains(searchText.ToLower()))
+           .Where(p => p.Title.ToLower().Contains(searchText.ToLower())
+             || p.Description.ToLower().Contains(searchText.ToLower()))
            .Include(p => p.Varients)
            .ToListAsync();
-        var response = new ServiceResponse<List<Product>> {
-            Data = products
-        };
+
+        response.Data = products;
         return response;
     }
 
@@ -51,6 +61,13 @@ public class ProductService : IProductService {
 
     public async Task<ServiceResponse<List<string>>>
         GetProductsSearchSuggestions(string searchText) {
+        var response = new ServiceResponse<List<string>>();
+        if (string.IsNullOrEmpty(searchText)) {
+            response.Success = false;
+            response.Message = "请输入搜索内容";
+            return response;
+        }
+        
         var products = await FindProductsBySearchText(searchText);
         var result = new List<string>();
         foreach (var product in products) {
@@ -59,13 +76,14 @@ public class ProductService : IProductService {
                 result.Add(product.Title);
             }
 
+            Debug.Assert(product != null);
             if (product.Description != null) {
                 var punctuation = product.Description
                    .Where(char.IsPunctuation)
                    .Distinct()
                    .ToArray();
                 var words = product.Description
-                   .Split()
+                   .Split('（', '）', '(', ')', ' ', ',', '.', '，', '。', '、', '"', '“', '”')
                    .Select(s => s.Trim(punctuation));
 
                 foreach (var word in words) {
@@ -78,12 +96,22 @@ public class ProductService : IProductService {
             }
         }
 
-        return new ServiceResponse<List<string>> {Data = result};
+        response.Data = result;
+        return response;
     }
 
     public async Task<ServiceResponse<int>> GetProductSales(int productId) {
+        var response = new ServiceResponse<int>();
+        var productResponse = await GetProduct(productId);
+        if (productResponse.Success==false) {
+            response.Success = false;
+            response.Message = "抱歉，该商品不存在";
+            return response;
+        }
+    
         var result = await _context.OrdersItems.Where(oi => oi.ProductId == productId).CountAsync();
-        return new ServiceResponse<int> {Data = result};
+        response.Data = result;
+        return response;
     }
 
     public async Task<ServiceResponse<List<Product>>> GetProducts() {
@@ -97,14 +125,25 @@ public class ProductService : IProductService {
 
     public async Task<ServiceResponse<List<Product>>>
         GetProductsByCategory(string categoryUrl) {
-        var response = new ServiceResponse<List<Product>> {
-            Data = await _context.Products
-               .Where(p =>
-                    p.Category!.Url.ToLower().Equals(categoryUrl.ToLower()))
-               .Include(p => p.Varients)
-               .ToListAsync()
-        };
+        var response = new ServiceResponse<List<Product>>();
+        if (string.IsNullOrEmpty(categoryUrl)) {
+            response.Success = false;
+            response.Message = "请输入类别URL";
+            return response;
+        }
 
+        var result = await _context.Products
+           .Where(p =>
+                p.Category!.Url.ToLower().Equals(categoryUrl.ToLower()))
+           .Include(p => p.Varients)
+           .ToListAsync();
+
+        if (!result.Any()) {
+            response.Success = false;
+            response.Message = "未找到该类别";
+        } else {
+            response.Data = result;
+        }
         return response;
     }
 }

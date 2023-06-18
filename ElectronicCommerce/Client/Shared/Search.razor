@@ -2,7 +2,8 @@
 @inject IProductService ProductService
 
 <div class="input-group">
-    <input @bind-value="searchText"
+    <input id="searchInput" 
+           @bind-value="searchText"
            @bind-value:event="oninput"
            type="search"
            list="products"
@@ -16,7 +17,7 @@
         }
     </datalist>
     <div class="input-group-action">
-        <button class="btn btn-primary" @onclick="SearchProducts">
+        <button id="searchButton" class="btn btn-primary" @onclick="SearchProducts">
             <span class="oi oi-magnifying-glass"></span>
         </button>
     </div>

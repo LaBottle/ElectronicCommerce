@@ -1,4 +1,6 @@
-﻿namespace ElectronicCommerce.Client.Services.ProductService;
+﻿using System.Diagnostics;
+
+namespace ElectronicCommerce.Client.Services.ProductService;
 
 public class ProductService : IProductService {
     private readonly HttpClient _http;
@@ -31,7 +33,7 @@ public class ProductService : IProductService {
         if (result != null && result.Data != null) {
             Products = result.Data;
         }
-
+        Debug.Assert(Products != null);
         if (Products.Count == 0) {
             Message = $"抱歉，没有找到与“{searchText}”相关的商品";
         }
@@ -74,7 +76,9 @@ public class ProductService : IProductService {
         var result =
             await _http.GetFromJsonAsync<ServiceResponse<List<string>>>(
                 $"api/product/searchSuggestions/{searchText}");
-        return result!.Data!;
+        Debug.Assert(result != null);
+        Debug.Assert(result.Data != null);
+        return result.Data;
     }
 
     public async Task GetProductsByCategory(string categoryUrl) {
@@ -88,6 +92,7 @@ public class ProductService : IProductService {
         CurrentPage = 1;
         PageCount = 0;
 
+        Debug.Assert(Products != null);
         if (Products.Count == 0) {
             Message = "抱歉，这里还没有商品";
         }

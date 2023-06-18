@@ -56,7 +56,7 @@ public class AuthController : ControllerBase {
     [HttpPost("change-address"), Authorize]
     public async Task<ActionResult<ServiceResponse<bool>>> ChangeAddress([FromBody] string newAddress) {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var response = await _authService.ChangePassword(int.Parse(userId), newAddress);
+        var response = await _authService.ChangeAddress(int.Parse(userId), newAddress);
         
         if (!response.Success) {
             return BadRequest(response);

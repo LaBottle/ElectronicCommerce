@@ -33,9 +33,9 @@ public class AuthService : IAuthService {
         return new ServiceResponse<int> {Data = user.Id, Message = "注册成功"};
     }
 
-    public async Task<bool> UserExists(string email) {
+    public async Task<bool> UserExists(string userName) {
         return await _context.Users.AnyAsync(user =>
-            user.UserName.ToLower().Equals(email.ToLower()));
+            user.UserName.Equals(userName));
     }
 
     public async Task<ServiceResponse<string>> Login(string userName, string password) {

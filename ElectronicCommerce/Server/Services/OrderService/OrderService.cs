@@ -1,4 +1,6 @@
-﻿namespace ElectronicCommerce.Server.Services.OrderService;
+﻿using System.Diagnostics;
+
+namespace ElectronicCommerce.Server.Services.OrderService;
 
 public class OrderService : IOrderService {
     private readonly DataContext _context;
@@ -15,6 +17,7 @@ public class OrderService : IOrderService {
     public async Task<ServiceResponse<bool>> PlaceOrder() {
         var products = (await _cartService.GetDbCartProducts()).Data;
         decimal totalPrice = 0;
+        Debug.Assert(products != null);
         products.ForEach(product => totalPrice += product.Price * product.Quantity);
 
         var orderItems = new List<OrderItem>();
@@ -34,7 +37,8 @@ public class OrderService : IOrderService {
         _context.Orders.Add(order);
 
         _context.CartItems.RemoveRange(
-            _context.CartItems.Where(ci => ci.UserId == _authService.GetUserId()));
+            _context.CartItems.Where(
+                ci => ci.UserId == _authService.GetUserId()));
 
         await _context.SaveChangesAsync();
 
@@ -77,7 +81,7 @@ public class OrderService : IOrderService {
            .OrderByDescending(o => o.OrderDate)
            .FirstOrDefaultAsync();
 
-        if (order==null) {
+        if (order == null) {
             response.Success = false;
             response.Message = "订单不存在";
             return response;
@@ -88,7 +92,7 @@ public class OrderService : IOrderService {
             TotalPrice = order.TotalPrice,
             Products = new List<OrderDetailsProductResponse>()
         };
-        
+
         order.OrderItems.ForEach(item => orderDetailsResponse.Products.Add(
             new OrderDetailsProductResponse {
                 ProductId = item.ProductId,

@@ -1,9 +1,13 @@
-﻿namespace ElectronicCommerce.Client.Services.AuthService; 
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
+
+namespace ElectronicCommerce.Client.Services.AuthService; 
 
 public class AuthService:IAuthService {
     private readonly HttpClient _http;
     private readonly AuthenticationStateProvider _authStateProvider;
-
+    
     public AuthService(HttpClient http, AuthenticationStateProvider authStateProvider) {
         _http = http;
         _authStateProvider = authStateProvider;
